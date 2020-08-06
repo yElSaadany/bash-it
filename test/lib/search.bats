@@ -2,6 +2,7 @@
 
 load ../test_helper
 load ../../lib/composure
+load ../../lib/log
 load ../../lib/helpers
 load ../../lib/utilities
 load ../../lib/search
@@ -39,7 +40,12 @@ function local_teardown {
 @test "search: git" {
   run _bash-it-search 'git' --no-color
   assert_line -n 0 '      aliases:  git   gitsvn  '
-  assert_line -n 1 '      plugins:  autojump   git   git-subrepo   jgitflow   jump  '
+  assert_line -n 1 -p '      plugins:'
+  for plugin in "autojump" "git" "gitstatus" "git-subrepo" "jgitflow" "jump"
+  do
+    echo $plugin
+    assert_line -n 1 -p $plugin
+  done
   assert_line -n 2 '  completions:  git   git_flow   git_flow_avh  '
 }
 
